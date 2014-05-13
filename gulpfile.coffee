@@ -22,9 +22,7 @@ gulp.task 'coffee', ->
   catch e
 
 gulp.task 'concat', ->
-  gulp.src(['./bower_components/tether/tether.js', 'js/select.js'])
-    .pipe(concat('select.js'))
-    .pipe(header(banner))
+  gulp.src(['js/select.js'])
     .pipe(gulp.dest('./'))
 
 gulp.task 'uglify', ->

@@ -1,10 +1,22 @@
 (function() {
-  var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref,
+  var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, Tether, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref, _ref1,
+    _this = this,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  _ref = Tether.Utils, extend = _ref.extend, addClass = _ref.addClass, removeClass = _ref.removeClass, hasClass = _ref.hasClass, getBounds = _ref.getBounds, Evented = _ref.Evented;
+  if (typeof exports === "object") {
+    Tether = require("../tether/tether.min.js");
+    _ref = Tether.Utils, extend = _ref.extend, addClass = _ref.addClass, removeClass = _ref.removeClass, hasClass = _ref.hasClass, getBounds = _ref.getBounds, Evented = _ref.Evented;
+  } else if (typeof define === "function" && define.amd) {
+    require(["../tether/tether.min.js"], function(Tether) {
+      var _ref1;
+      return _ref1 = Tether.Utils, extend = _ref1.extend, addClass = _ref1.addClass, removeClass = _ref1.removeClass, hasClass = _ref1.hasClass, getBounds = _ref1.getBounds, Evented = _ref1.Evented, _ref1;
+    });
+  } else if (!window.Tether) {
+    Tether = window.Tether;
+    _ref1 = Tether.Utils, extend = _ref1.extend, addClass = _ref1.addClass, removeClass = _ref1.removeClass, hasClass = _ref1.hasClass, getBounds = _ref1.getBounds, Evented = _ref1.Evented;
+  }
 
   ENTER = 13;
 
@@ -35,8 +47,8 @@
   };
 
   getFocusedSelect = function() {
-    var _ref1;
-    return (_ref1 = document.querySelector('.select-target-focused')) != null ? _ref1.selectInstance : void 0;
+    var _ref2;
+    return (_ref2 = document.querySelector('.select-target-focused')) != null ? _ref2.selectInstance : void 0;
   };
 
   searchText = '';
@@ -82,11 +94,11 @@
   });
 
   document.addEventListener('keydown', function(e) {
-    var select, _ref1, _ref2;
+    var select, _ref2, _ref3;
     if (!(select = getFocusedSelect())) {
       return;
     }
-    if ((_ref1 = e.keyCode) === UP || _ref1 === DOWN || _ref1 === ESCAPE) {
+    if ((_ref2 = e.keyCode) === UP || _ref2 === DOWN || _ref2 === ESCAPE) {
       e.preventDefault();
     }
     if (select.isOpen()) {
@@ -101,7 +113,7 @@
           return select.target.focus();
       }
     } else {
-      if ((_ref2 = e.keyCode) === UP || _ref2 === DOWN || _ref2 === SPACE) {
+      if ((_ref3 = e.keyCode) === UP || _ref3 === DOWN || _ref3 === SPACE) {
         return select.open();
       }
     }
@@ -278,7 +290,7 @@
     };
 
     Select.prototype.setupTether = function() {
-      return this.tether = new Tether(extend({
+      return this.tether = new Tether({
         element: this.drop,
         target: this.target,
         attachment: 'top left',
@@ -290,15 +302,15 @@
             attachment: 'together'
           }
         ]
-      }, this.options.tetherOptions));
+      });
     };
 
     Select.prototype.renderTarget = function() {
-      var option, _i, _len, _ref1;
+      var option, _i, _len, _ref2;
       this.target.innerHTML = '';
-      _ref1 = this.select.querySelectorAll('option');
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        option = _ref1[_i];
+      _ref2 = this.select.querySelectorAll('option');
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        option = _ref2[_i];
         if (option.selected) {
           this.target.innerHTML = option.innerHTML;
           break;
@@ -308,12 +320,12 @@
     };
 
     Select.prototype.renderDrop = function() {
-      var el, option, optionList, _i, _len, _ref1;
+      var el, option, optionList, _i, _len, _ref2;
       optionList = document.createElement('ul');
       addClass(optionList, 'select-options');
-      _ref1 = this.select.querySelectorAll('option');
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        el = _ref1[_i];
+      _ref2 = this.select.querySelectorAll('option');
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        el = _ref2[_i];
         option = document.createElement('li');
         addClass(option, 'select-option');
         option.setAttribute('data-value', el.value);
@@ -478,7 +490,7 @@
   })(Evented);
 
   Select.init = function(options) {
-    var el, _i, _len, _ref1, _results;
+    var el, _i, _len, _ref2, _results;
     if (options == null) {
       options = {};
     }
@@ -491,10 +503,10 @@
     if (options.selector == null) {
       options.selector = 'select';
     }
-    _ref1 = document.querySelectorAll(options.selector);
+    _ref2 = document.querySelectorAll(options.selector);
     _results = [];
-    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-      el = _ref1[_i];
+    for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+      el = _ref2[_i];
       if (!el.selectInstance) {
         _results.push(new Select(extend({
           el: el
@@ -506,6 +518,16 @@
     return _results;
   };
 
-  window.Select = Select;
+  (function(root, factory) {
+    if (typeof define === "function" && define.amd) {
+      define([], factory);
+    } else if (typeof exports === "object") {
+      module.exports = factory();
+    } else {
+      root.returnExports = factory();
+    }
+  })(this, function() {
+    return Select;
+  });
 
 }).call(this);

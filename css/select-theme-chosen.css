@@ -29,8 +29,6 @@
 .select.select-theme-chosen {
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
   user-select: none; }
   .select.select-theme-chosen .select-content {
     -webkit-border-radius: 5px;
@@ -115,8 +113,6 @@
   border-radius: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;

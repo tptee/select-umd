@@ -1,13 +1,13 @@
 {
-  "name": "select",
+  "name": "select-umd",
   "main": "select.js",
   "version": "0.5.1",
-  "homepage": "https://github.com/HubSpot/select",
+  "homepage": "https://github.com/tptee/select-umd",
   "authors": [
     "Zack Bloom <zbloom@hubspot.com>",
     "Adam Schwartz <aschwartz@hubspot.com>"
   ],
-  "description": "Styleable select elements built on Tether",
+  "description": "Styleable select elements built on Tether. Fork for UMD support",
   "keywords": [
     "select",
     "options",
@@ -23,6 +23,6 @@
     "tests"
   ],
   "dependencies": {
-    "tether": "~0.5.0"
+    "tether": "~0.6.5"
   }
 }

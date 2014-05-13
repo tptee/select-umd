@@ -1,4 +1,12 @@
-{extend, addClass, removeClass, hasClass, getBounds, Evented} = Tether.Utils
+if typeof exports is "object"
+  Tether = require "../tether/tether.min.js"
+  {extend, addClass, removeClass, hasClass, getBounds, Evented} = Tether.Utils
+else if typeof define is "function" and define.amd
+  require ["../tether/tether.min.js"], (Tether) =>
+    {extend, addClass, removeClass, hasClass, getBounds, Evented} = Tether.Utils
+else unless window.Tether
+  Tether = window.Tether
+  {extend, addClass, removeClass, hasClass, getBounds, Evented} = Tether.Utils
 
 ENTER = 13
 ESCAPE = 27
@@ -256,7 +264,7 @@ class Select extends Evented
       @close()
 
   setupTether: ->
-    @tether = new Tether extend
+    @tether = new Tether
       element: @drop
       target: @target
       attachment: 'top left'
@@ -266,7 +274,6 @@ class Select extends Evented
         to: 'window'
         attachment: 'together'
       ]
-    , @options.tetherOptions
 
   renderTarget: ->
     @target.innerHTML = ''
@@ -426,4 +433,17 @@ Select.init = (options={}) ->
     if not el.selectInstance
       new Select extend {el}, options
 
-window.Select = Select
+# UMD wrapper
+((root, factory) ->
+  if typeof define is "function" and define.amd
+    # AMD. Register as an anonymous module.
+    define [], factory
+  else if typeof exports is "object"
+    # Node/Browserify
+    module.exports = factory()
+  else
+    # Browser globals (root is window)
+    root.returnExports = factory()
+  return
+) this, ->
+  return Select
