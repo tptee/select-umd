@@ -1,7 +1,7 @@
 {
   "name": "select-umd",
   "main": "select.js",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "https://github.com/tptee/select-umd",
   "authors": [
     "Zack Bloom <zbloom@hubspot.com>",
